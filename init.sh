@@ -1,16 +1,25 @@
 #!/bin/bash
 set -e
 
-# 1. Mise à jour et paquets système (les plus indispensables)
+# 1. Dépendances système
 apt-get update
 apt-get install -y \
     ffmpeg \
     libsm6 \
-    libxext6
+    libxext6 \
+    libgl1-mesa-glx
 
-# 2. Instal’ Python “headless”
+# 2. Python & pip à jour
 python3 -m pip install --upgrade pip
-python3 -m pip install opencv-python-headless
 
-# 3. Rétablir droits
+# 3. PyTorch et bibliothèques ML
+python3 -m pip install \
+    diffusers transformers accelerate \
+    einops lpips \
+    opencv-python-headless
+
+# 4. Forcer une version de huggingface_hub compatible
+python3 -m pip install huggingface-hub==0.25.2
+
+# 5. Restituer les droits à onyxia
 chown -R ${USERNAME}:${GROUPNAME} ${HOME}
